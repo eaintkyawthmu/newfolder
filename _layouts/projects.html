@@ -1,0 +1,93 @@
+---
+layout: default
+---
+
+{% capture padding %}
+{% unless page.layout == 'home' %}px-1{% endunless %}
+{% endcapture %}
+
+<div class="row">
+  <div id="core-wrapper" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <div class="post {{ padding | strip }} {% unless has_tail %} flex-grow-1 mb-5{% endunless %}">
+      {% if page.layout == 'page' or page.collection == 'tabs' %}
+      {% assign tab_key = page.title | downcase %}
+      {% assign title = site.data.locales[lang].tabs[tab_key] | default: page.title %}
+      <h1 class="dynamic-title {{ padding | strip }}">
+        {{ title }}
+      </h1>
+      {% endif %}
+
+
+      <div id="project-list" class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          {% for project in site.projects %}
+          <div class="col">
+            <a href="{{ project.url | relative_url }}" class="card-wrapper">
+              <div class="card project-preview" style="display: flex; flex-direction: column; height: 100%;">
+                <!-- Project Image -->
+                {% if project.image %}
+                {% if project.image.lqip %}
+                {% capture lqip %}lqip="{{ project.image.lqip }}"{% endcapture %}
+                {% endif %}
+      
+                {% assign src = project.image.path | default: project.image %}
+                {% unless src contains '//' %}
+                {% assign src = site.project_img_path | append: src %}
+                {% endunless %}
+      
+                {% assign alt = project.image.alt | xml_escape | default: 'Preview Image' %}
+      
+                <img src="{{ src | relative_url }}" alt="{{ alt }}" {{ lqip }} style="width: 100%; height: 200px; object-fit: cover;">
+                {% endif %}
+
+                <div class="card-body">
+                  <!-- Project Title -->
+                  <h1 class="card-title">{{ project.title }}</h1>
+
+                  <!-- Project Description -->
+                  <div class="card-text project-content">
+                    <p>{{ project.description | truncate: 200 | escape }}</p>
+                  </div>
+                  <!-- Project Meta -->
+                  <div class="project-meta d-flex flex-column align-items-start">
+
+                    <!-- Date -->
+                    <div class="project-date">
+                      <i class="far fa-calendar fa-fw"></i>
+                      {% include datetime.html date=project.date lang=lang %}
+                    </div>
+
+                    <!-- Categories -->
+                    {% if project.categories.size > 0 %}
+                    <div class="project-categories">
+                      <i class="far fa-folder-open fa-fw"></i>
+                      <span class="categories">
+                        {% for category in project.categories %}
+                        {{ category }}
+                        {%- unless forloop.last -%}, {% endunless -%}
+                        {% endfor %}
+                      </span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Tags -->
+                    {% if project.tags.size > 0 %}
+                    <div class="project-tags">
+                      <i class="fas fa-tags"></i>
+                      <span class="tags">
+                        {% for tag in project.tags %}
+                        {{ tag }}
+                        {%- unless forloop.last -%}, {% endunless -%}
+                        {% endfor %}
+                      </span>
+                    </div>
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>

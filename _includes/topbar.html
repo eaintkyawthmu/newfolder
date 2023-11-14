@@ -1,0 +1,25 @@
+<!-- The Top Bar -->
+
+<header id="topbar-wrapper" aria-label="Top Bar">
+  <div
+    id="topbar"
+    class="d-flex align-items-right justify-content-end px-lg-3 h-100"
+  >
+    <search class="d-flex align-items-center ms-3 ms-lg-0">
+      <i class="fas fa-search fa-fw"></i>
+      <button type="button" id="search-trigger" class="btn btn-link">
+      </button>
+      <input
+        class="form-control"
+        id="search-input"
+        type="search"
+        aria-label="search"
+        autocomplete="off"
+        placeholder="{{ site.data.locales[include.lang].search.hint | capitalize }}..."
+      >
+      <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">
+        {{- site.data.locales[include.lang].search.cancel -}}
+      </button>
+    </search>
+  </div>
+</header>
